@@ -74,6 +74,14 @@
 // [TIMER4]$
 
 // $[USART0]
+// USART0 RX on PA03
+#define USART0_RX_PORT                           gpioPortA
+#define USART0_RX_PIN                            3
+
+// USART0 TX on PA04
+#define USART0_TX_PORT                           gpioPortA
+#define USART0_TX_PIN                            4
+
 // [USART0]$
 
 // $[USART1]

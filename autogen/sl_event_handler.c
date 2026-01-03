@@ -19,7 +19,6 @@
 #include "sl_mpu.h"
 #include "nvm3_default.h"
 #include "sl_simple_button_instances.h"
-#include "sl_simple_led_instances.h"
 #include "sl_simple_timer.h"
 #include "throughput_central.h"
 #include "throughput_peripheral.h"
@@ -45,7 +44,6 @@ void sl_driver_init(void)
 {
   GPIOINT_Init();
   sl_simple_button_init_instances();
-  sl_simple_led_init_instances();
 }
 
 void sl_service_init(void)

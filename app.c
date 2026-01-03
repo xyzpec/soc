@@ -43,9 +43,6 @@
 #include "sl_simple_button_instances.h"
 #include "sl_simple_timer.h"
 
-#ifdef SL_CATALOG_SIMPLE_LED_PRESENT
-#include "sl_simple_led_instances.h"
-#endif
 
 #if SL_SIMPLE_BUTTON_COUNT >= 2
 #define PB0               SL_SIMPLE_BUTTON_INSTANCE(0)
@@ -53,7 +50,6 @@
 #elif SL_SIMPLE_BUTTON_COUNT == 1
 #define PB0               SL_SIMPLE_BUTTON_INSTANCE(0)
 #define PB1               PB0
-#define LED0              SL_SIMPLE_LED_INSTANCE(0)
 #define BUTTON_TIMEOUT    1000
 #endif // SL_SIMPLE_BUTTON_COUNT
 
@@ -151,15 +147,6 @@ void sl_button_on_change(const sl_button_t *handle)
 void app_set_test_type(throughput_notification_t test_type)
 {
   type = test_type;
-#ifdef SL_CATALOG_SIMPLE_LED_PRESENT
-#if SL_SIMPLE_LED_COUNT > 0
-  if (test_type == sl_bt_gatt_indication) {
-    sl_led_turn_on(LED0);
-  } else {
-    sl_led_turn_off(LED0);
-  }
-#endif // SL_SIMPLE_LED_COUNT
-#endif // SL_CATALOG_SIMPLE_LED_PRESENT
 }
 
 /**************************************************************************//**
@@ -319,19 +306,12 @@ void sl_bt_on_event(sl_bt_msg_t *evt)
     // Do not call any stack command before receiving this boot event!
     case sl_bt_evt_system_boot_id:
       app_log("Throughput Test initialized" APP_LOG_NEW_LINE);
-      if (app_check_buttons()) {
-        // Enable throughput test in Central mode if button is pressed
-        app_log_info("Button is pressed on start: Central mode set." APP_LOG_NEW_LINE);
-        role = THROUGHPUT_ROLE_CENTRAL;
-        throughput_central_enable();
-        // Mask first button release
-        mask_release = true;
-      } else {
-        // Enable throughput test in Peripheral mode
-        app_log_info("Peripheral mode set." APP_LOG_NEW_LINE);
-        role = THROUGHPUT_ROLE_PERIPHERAL;
-        throughput_peripheral_enable();
-      }
+ 
+      // Enable throughput test in Peripheral mode
+      app_log_info("Peripheral mode set." APP_LOG_NEW_LINE);
+      role = THROUGHPUT_ROLE_PERIPHERAL;
+      throughput_peripheral_enable();
+  
       break;
 
     // -------------------------------
